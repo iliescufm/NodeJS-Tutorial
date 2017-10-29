@@ -10,20 +10,27 @@ app.get('/', function (req, res) {
    res.sendFile( __dirname + "/" + "index.html" );
 })
 
-app.post('/process_post', urlencodedParser, function (req, res) {
+function fmtMessage(rq, rs) {
    // Prepare output in JSON format
+
    response = {
-      first_name:req.body.first_name,
-      last_name:req.body.last_name
+      first_name:rq.body.first_name,
+      last_name:rq.body.last_name
    };
    console.log(response);
-   res.end(JSON.stringify(response));
-})
+	var reJSON = JSON.stringify(response);
+   rs.end(reJSON);
+}
 
-var server = app.listen(8081, function () {
+app.post('/process_post', urlencodedParser, fmtMessage)
+
+
+function stLog () {
    var host = server.address().address
    var port = server.address().port
    
    console.log("Example app listening at http://%s:%s", host, port)
 
-})
+}
+
+var server = app.listen(8081, stLog)
